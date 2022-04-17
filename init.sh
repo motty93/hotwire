@@ -6,7 +6,7 @@ docker build -t hotwire_web:latest -f docker/rails/Dockerfile .
 echo "###### rails new #######"
 docker container run --name hotwire_web_container -v `pwd`:/myapp -it hotwire_web:latest \
   rails _7.0.2_ new . --no-deps --database=postgresql --css tailwind \
-  --skip-jbuilder --skip-action-mailbox --skip-mailer --skip-test --skip-active-storage --skip-action-text
+  -s --skip-jbuilder --skip-action-mailbox --skip-mailer --skip-test --skip-active-storage --skip-action-text
 
 echo "###### docker commit ######"
 docker commit hotwire_web_container hotwire_web:latest
@@ -28,7 +28,6 @@ if [ "$(uname)" == 'Linux' ]; then
 fi
 
 echo "###### bundle install ######"
-docker compose run --rm web bundle add foreman dotenv-rails
 docker compose run --rm web bundle config set path 'vendor/bundle'
 docker compose run --rm web bundle install
 
